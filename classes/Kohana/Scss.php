@@ -90,7 +90,7 @@ class Kohana_Scss{
     $filename = $config['url'].$compiled;
 
     // if the file exists no need to generate
-    if ( ! file_exists($filename))
+    if ( ! file_exists(DOCROOT . $filename))
     {
       self::_generate_assets($filename, $files);
     }
@@ -140,7 +140,7 @@ class Kohana_Scss{
     $filename = $path.$compiled;
 
     // if the file exists no need to generate
-    if ( ! file_exists($filename))
+    if ( ! file_exists(DOCROOT . $filename))
     {
       touch(DOCROOT . $filename, filemtime($file) - 3600);
     }
@@ -179,6 +179,11 @@ class Kohana_Scss{
    */
   public static function _compile($data)
   {
+    if (Kohana::$profiling === TRUE)
+    {
+      // Start a new benchmark
+      $benchmark = Profiler::start(__CLASS__, __FUNCTION__);
+    }
     $scss = new scssc();
 
     $include_paths = Kohana::$config->load('scss.include_paths');
@@ -199,6 +204,12 @@ class Kohana_Scss{
     catch (ScssException $ex)
     {
       exit($ex->getMessage());
+    }
+
+    if (isset($benchmark))
+    {
+      // Stop the benchmark
+      Profiler::stop($benchmark);
     }
 
     return $compiled;
