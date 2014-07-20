@@ -11,6 +11,7 @@ Kohana 3.3 SCSS Module to compile Scss files to css with [scssphp](http://leafo.
 4. Configure scss config file
 5. Add this code to html head in view file: 
 	
+
 	<head>
 		<title>Kohana SCSS</title>
 		<?php echo Scss::render('test'); ?>
