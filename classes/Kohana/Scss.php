@@ -125,10 +125,10 @@ class Kohana_Scss{
   protected static function _get_filename($file, $path)
   {
     // get the filename
-    $filename = str_replace(DOCROOT, '', $file);
-    $filename = str_replace('.'.self::$ext, '', $filename);
-    $filename = str_replace(DIRECTORY_SEPARATOR, '', $filename);
-    $filename = preg_replace('/^.+\//', '', $filename);
+    $filename = str_replace('.'.self::$ext, '', $file);
+    $filename = explode(DIRECTORY_SEPARATOR, $filename);
+    $filename = end($filename);
+    $filename = md5($filename);
 
     // get the last modified date
     $last_modified = self::_get_last_modified(array($file));
@@ -166,8 +166,8 @@ class Kohana_Scss{
       $data .= file_get_contents($file);
     }
 
-    $data = self::_compile($data);
     $data = self::_compress($data);
+    $data = self::_compile($data);
 
     file_put_contents(DOCROOT . $filename, $data, LOCK_EX);
   }
@@ -180,6 +180,17 @@ class Kohana_Scss{
   public static function _compile($data)
   {
     $scss = new scssc();
+
+    $include_paths = Kohana::$config->load('scss.include_paths');
+
+    if (!empty($include_paths))
+    {
+      foreach ($include_paths as $include_path){
+        $scss->addImportPath($include_path);
+      }
+
+      $scss->addImportPath(BPATH);
+    }
 
     try
     {
