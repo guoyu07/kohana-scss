@@ -144,7 +144,6 @@ class Kohana_Scss{
     $filename = str_replace('.'.self::$ext, '', $file);
     $filename = explode(DIRECTORY_SEPARATOR, $filename);
     $filename = end($filename);
-    $filename = md5($filename);
 
     // get the last modified date
     $last_modified = self::_get_last_modified(array($file));
@@ -178,6 +177,7 @@ class Kohana_Scss{
 
     $data = self::_compress($data);
     $data = self::_compile($data);
+    $data = CssMin::minify($data);
 
     file_put_contents(DOCROOT . $filename, $data, LOCK_EX);
   }
