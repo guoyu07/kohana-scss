@@ -56,13 +56,23 @@ class Kohana_Scss{
       return HTML::style(self::_combine($stylesheets), array('media' => $media));
     }
 
+    // Clear compiled folder?
+    if ($config['clear_first']) {
+      self::clear_folder(DOCROOT . $config['url']);
+    }
+
     // if no compression
     foreach ($stylesheets as $file)
     {
-      $data = file_get_contents($file);
-      $data = self::_compile($data);
       $filename = self::_get_filename($file, $config['url']);
-      file_put_contents(DOCROOT . $filename, $data);
+      // if the file exists no need to generate
+      if ( ! file_exists(DOCROOT . $filename))
+      {
+        touch(DOCROOT . $filename, filemtime($file) - 3600);
+        $data = file_get_contents($file);
+        $data = self::_compile($data);
+        file_put_contents(DOCROOT . $filename, $data);
+      }
       array_push($assets, html::style($filename, array('media' => $media)));
     }
 
@@ -92,6 +102,12 @@ class Kohana_Scss{
     // if the file exists no need to generate
     if ( ! file_exists(DOCROOT . $filename))
     {
+
+      // Clear compiled folder?
+      if ($config['clear_first']) {
+        self::clear_folder(DOCROOT . $config['url']);
+      }
+
       self::_generate_assets($filename, $files);
     }
 
@@ -138,12 +154,6 @@ class Kohana_Scss{
 
     // compose the expected file path
     $filename = $path.$compiled;
-
-    // if the file exists no need to generate
-    if ( ! file_exists(DOCROOT . $filename))
-    {
-      touch(DOCROOT . $filename, filemtime($file) - 3600);
-    }
 
     return $filename;
   }
@@ -243,6 +253,22 @@ class Kohana_Scss{
   protected static function _html_comment($string = '')
   {
     return '<!-- '.$string.' -->';
+  }
+
+  /**
+   * Delete all files from a provided folder.
+   *
+   * @param string $path The path to clear.
+   *
+   * @return void
+   */
+  protected static function clear_folder($path) {
+    $files = glob("$path*");
+    foreach ($files as $file){
+      if (is_file($file)) {
+        unlink($file);
+      }
+    }
   }
 
 }
