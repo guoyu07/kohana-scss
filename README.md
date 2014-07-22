@@ -25,3 +25,7 @@ or you can send an array of files
 			'test', 'test2'
 		)); ?>
 	</head>
+
+## Description in Russian
+
+[Kohana-scss](http://sarbas.org/posts/kohana-scss.html)
