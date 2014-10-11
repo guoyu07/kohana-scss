@@ -1,7 +1,7 @@
 {
-    "name": "User/kohana-jsfiles",
+    "name": "tsarbas/kohana-scss",
 	"type": "kohana-module",
-    "description": "Javascript files compiler for Kohana 3.3.x",
+    "description": "Kohana 3.3 SCSS Module to compile Scss files to css with scsspphp compiler",
 	"version": "1.0.0",
     "license": "MIT",
     "authors": [
