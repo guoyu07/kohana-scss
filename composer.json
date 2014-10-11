@@ -1,0 +1,17 @@
+{
+    "name": "User/kohana-jsfiles",
+	"type": "kohana-module",
+    "description": "Javascript files compiler for Kohana 3.3.x",
+	"version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tsarbas",
+            "email": "tsarbas@yandex.kz"
+        }
+    ],
+    "require": {
+		"composer/installers": "~1.0",
+		"php": ">=5.3.3"
+	}
+}
