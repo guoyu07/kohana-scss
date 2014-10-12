@@ -175,7 +175,6 @@ class Kohana_Scss{
       $data .= file_get_contents($file);
     }
 
-    $data = self::_compress($data);
     $data = self::_compile($data);
     $data = CssMin::minify($data);
 
