@@ -1,17 +1,21 @@
 {
-    "name": "tsarbas/kohana-scss",
-	"type": "kohana-module",
-    "description": "Kohana 3.3 SCSS Module to compile Scss files to css with scsspphp compiler",
-	"version": "1.0.0",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "tsarbas",
-            "email": "tsarbas@yandex.kz"
-        }
-    ],
-    "require": {
-		"composer/installers": "~1.0",
-		"php": ">=5.3.3"
+  "name": "tsarbas/kohana-scss",
+  "type": "kohana-module",
+  "description": "Kohana 3.3 SCSS Module to compile Scss files to css with scsspphp compiler",
+  "version": "1.0.0",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "tsarbas",
+      "email": "tsarbas@yandex.kz",
+      "homepage": "http://sarbas.org/"
+    }
+  ],
+  "require": {
+    "composer/installers": "~1.0",
+    "kohana/core": ">=3.3",
+    "leafo/scssphp": "dev-master",
+    "natxet/CssMin": "dev-master",
+    "php": ">=5.3.3"
 	}
 }

@@ -1,3 +1,4 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-//require_once MODPATH . '/scss/vendor/scss.inc.php';
+include VPATH . 'leafo/scssphp/scss.inc.php';
+include VPATH . 'natxet/CssMin/src/CssMin.php';
