@@ -11,8 +11,8 @@ Kohana 3.3 SCSS Module to compile Scss files to css with [scssphp](http://leafo.
 4. Configure scss config file
 5. Install dependencies via composer
 
-  cd modules/scss
-  composer.phar install
+    cd modules/scss
+    composer.phar install
 
 or download the [scssphp](http://leafo.net/scssphp/) and [CssMin]https://github.com/natxet/CssMin libraries into scss/vendor path.
 
