@@ -31,7 +31,12 @@ class Kohana_Scss{
     $assets = array();
 
     // get config
-    $config = Kohana::$config->load('scss');
+    $config = Kohana::$config->load('scss');;
+
+    // create dir if not exists
+    if ( ! is_dir(DOCROOT . $config['url'])) {
+      mkdir(DOCROOT . $config['url'], 0755, true);
+    }
 
     // validate
     foreach ($array as $file)
@@ -202,8 +207,6 @@ class Kohana_Scss{
       foreach ($include_paths as $include_path){
         $scss->addImportPath($include_path);
       }
-
-      $scss->addImportPath(BPATH);
     }
 
     try
@@ -271,3 +274,5 @@ class Kohana_Scss{
   }
 
 }
+
+class ScssException Extends Exception {}
