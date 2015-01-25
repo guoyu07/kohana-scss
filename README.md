@@ -13,7 +13,7 @@ Kohana 3.3 SCSS Module to compile Scss files to css with [scssphp](http://leafo.
 
 	cd modules/scss && composer.phar install
 
-or download the [scssphp](http://leafo.net/scssphp/) and [CssMin]https://github.com/natxet/CssMin libraries into scss/vendor path.
+or download the [scssphp](http://leafo.net/scssphp/) and [CssMin](https://github.com/natxet/CssMin) libraries into scss/vendor path.
 
 Add this code to html head in view file:
 
