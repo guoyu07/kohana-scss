@@ -1,0 +1,6 @@
+[submodule "vendor/leafo/scssphp"]
+	path = vendor/leafo/scssphp
+	url = git://github.com/leafo/scssphp.git
+[submodule "vendor/natxet/CssMin"]
+	path = vendor/natxet/CssMin
+	url = git://github.com/natxet/CssMin.git
