@@ -31,12 +31,7 @@ class Kohana_Scss{
     $assets = array();
 
     // get config
-    $config = Kohana::$config->load('scss');;
-
-    // create dir if not exists
-    if ( ! is_dir(DOCROOT . $config['url'])) {
-      mkdir(DOCROOT . $config['url'], 0755, true);
-    }
+    $config = Kohana::$config->load('scss');
 
     // validate
     foreach ($array as $file)
@@ -70,10 +65,13 @@ class Kohana_Scss{
     foreach ($stylesheets as $file)
     {
       $filename = self::_get_filename($file, $config['url']);
-      // if the file exists no need to generate
-      if ( ! file_exists(DOCROOT . $filename))
-      {
-        touch(DOCROOT . $filename, filemtime($file) - 3600);
+		
+		$cacheTime = ! file_exists($file) ? 0 : filemtime($file);
+
+        // Do not re-parse file if original is older
+        if ($cacheTime && filemtime(DOCROOT . $filename) < $cacheTime)
+        {
+		  touch(DOCROOT . $filename, filemtime($file) - 3600);
         $data = file_get_contents($file);
         $data = self::_compile($data);
         file_put_contents(DOCROOT . $filename, $data);
@@ -155,6 +153,7 @@ class Kohana_Scss{
 
     // compose the expected filename to store in /media/css
     $compiled = $filename.'-'.$last_modified.'.css';
+	 $compiled = $filename.'.css';
 
     // compose the expected file path
     $filename = $path.$compiled;
@@ -207,6 +206,8 @@ class Kohana_Scss{
       foreach ($include_paths as $include_path){
         $scss->addImportPath($include_path);
       }
+
+      $scss->addImportPath(VPATH);
     }
 
     try
@@ -272,7 +273,41 @@ class Kohana_Scss{
       }
     }
   }
+  
+  // нужно переделать для нормального кеширования
+  public function cache($input)
+    {
+        //$cacheFolder = $this->options['cache'];
+		  //$cacheFolder = APPPATH . 'cache' . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR
+		  $cacheFolder = APPPATH . 'cache' . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR;
+		  
+        if (! is_dir($cacheFolder))
+        {
+            //throw new \Exception($cacheFolder . ': Cache directory seem\'s to not exists');
+				return self::_html_comment($cacheFolder . ': Cache directory seem\'s to not exists');
+        }
 
+        $path = str_replace('//', '/', $cacheFolder . '/' . md5($input) . '.php');
+        
+		  $cacheTime = ! file_exists($path) ? 0 : filemtime($path);
+
+        // Do not re-parse file if original is older
+        if ($cacheTime && filemtime($input) < $cacheTime)
+        {
+            return $path;
+        }
+
+        if (! is_writable($cacheFolder))
+        {
+            //throw new \Exception(sprintf('Cache directory must be writable. "%s" is not.', $cacheFolder));
+				return self::_html_comment('Cache directory must be writable. "%s" is not.', $cacheFolder);
+        }
+
+        $rendered = $this->compile($input);
+        file_put_contents($path, $rendered);
+
+        return $this->stream($rendered, true);
+    }
 }
 
 class ScssException Extends Exception {}
