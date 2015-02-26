@@ -62,17 +62,19 @@ class Kohana_Scss{
     }
 
     // if no compression
-    foreach ($stylesheets as $file)
+    foreach ($stylesheets as $scss)
     {
-      $filename = self::_get_filename($file, $config['url']);
+      $filename = self::_get_filename($scss, $config['url']);
 		
-		$cacheTime = ! file_exists($file) ? 0 : filemtime($file);
+      $css = DOCROOT . $filename;
+			$cacheTimeSCSS = file_exists($scss) ? filemtime($scss) : 0;
+      $cacheTimeCSS  = file_exists($css)  ? filemtime($css)  : 0;
 
-        // Do not re-parse file if original is older
-        if ($cacheTime && filemtime(DOCROOT . $filename) < $cacheTime)
+      // Do not re-parse file.scss if original is older
+      if ($cacheTimeSCSS && $cacheTimeCSS < $cacheTimeSCSS)
         {
-		  touch(DOCROOT . $filename, filemtime($file) - 3600);
-        $data = file_get_contents($file);
+		  touch(DOCROOT . $filename, $cacheTimeSCSS - 3600);
+        $data = file_get_contents($scss);
         $data = self::_compile($data);
         file_put_contents(DOCROOT . $filename, $data);
       }
