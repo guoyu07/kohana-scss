@@ -78,7 +78,7 @@ class Kohana_Scss{
         $data = self::_compile($data);
         file_put_contents(DOCROOT . $filename, $data);
       }
-      array_push($assets, html::style($filename, array('media' => $media)));
+      array_push($assets, HTML::style($filename, array('media' => $media)));
     }
 
     return join("\n", $assets);
